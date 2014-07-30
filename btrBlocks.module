@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ * Module file for btrBlocks.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function btrBlocks_block_info() {
+  $blocks['vocabulary'] = array(
+    'info' => t('B-Translator: Vocabulary.'),
+    'cache' => DRUPAL_CACHE_CUSTOM,
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function btrBlocks_block_configure($delta = '') {
+  $form = array();
+
+  if ($delta == 'vocabulary') {
+    $form['btrBlocks_vocabulary_url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('URL of the vocabulary'),
+      '#default_value' => variable_get('btrBlocks_vocabulary_url', 'https://l10n.org.al/vocabulary/ICT_sq'),
+    );
+    $form['btrBlocks_vocabulary_width'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Width of the iFrame'),
+      '#default_value' => variable_get('btrBlocks_vocabulary_width', '100%'),
+    );
+    $form['btrBlocks_vocabulary_height'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Height of the iFrame'),
+      '#default_value' => variable_get('btrBlocks_vocabulary_height', '300'),
+    );
+  }
+
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+function btrBlocks_block_save($delta = '', $edit = array()) {
+  if ($delta == 'vocabulary') {
+    variable_set('btrBlocks_vocabulary_url', $edit['btrBlocks_vocabulary_url']);
+    variable_set('btrBlocks_vocabulary_width', $edit['btrBlocks_vocabulary_width']);
+    variable_set('btrBlocks_vocabulary_height', $edit['btrBlocks_vocabulary_height']);
+  }
+}
+
+
+/**
+ * Implements hook_block_view().
+ */
+function btrBlocks_block_view($delta = '') {
+  switch ($delta) {
+    case 'vocabulary':
+      $url = variable_get('btrBlocks_vocabulary_url', 'https://l10n.org.al/vocabulary/ICT_sq');
+      $width = variable_get('btrBlocks_vocabulary_width', '100%');
+      $height = variable_get('btrBlocks_vocabulary_height', '300');
+
+      $block['subject'] = t('Vocabulary');
+      $block['content'] = "<iframe src='$url?display=iframe' width='$width' height='$height' seamless='seamless' frameborder='0'></iframe>";
+      break;
+  }
+
+  return $block;
+}

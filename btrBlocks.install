@@ -1,0 +1,20 @@
+<?php
+/**
+ * @file
+ * Install functions for btrBlocks.
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function btrBlocks_uninstall() {
+  // Delete variables that were used for this module.
+  $variables = array(
+    'btrBlocks_vocabulary_url',
+    'btrBlocks_vocabulary_width',
+    'btrBlocks_vocabulary_height',
+  );
+  foreach ($variables as $var) {
+    variable_del($var);
+  }
+}

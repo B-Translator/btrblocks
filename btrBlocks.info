@@ -1,0 +1,4 @@
+name = B-Translator Blocks
+description = Blocks that interface and interact with B-Translator.
+package = B-Translator
+core = 7.x
